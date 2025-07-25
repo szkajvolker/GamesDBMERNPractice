@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import Loading from "../components/Loading";
@@ -19,6 +19,7 @@ const CreatePage = () => {
 
     if (!name || !developer || !platform || !releaseYear) {
       toast.error("Please fill all required fields!");
+      return;
     }
     const data = {
       name,
@@ -140,7 +141,7 @@ const CreatePage = () => {
             </label>
             <select
               value={platform}
-              className="w-full px-4 py-3  bg-white-10 border-2 border-purple-500/50 rounded-lg text-white focus:ring-2 focus:ring-purple-500"
+              className="custom-dropdown w-full px-4 py-3 border-2 border-purple-500/50 rounded-lg text-white focus:ring-2 focus:ring-purple-500"
               id="platform"
               onChange={(e) => setPlatform(e.target.value)}
             >
@@ -155,7 +156,7 @@ const CreatePage = () => {
 
           <div className="flex justify-center">
             <button
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-105"
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-105 mt-5"
               type="submit"
             >
               ✨ Create Epic Game

@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+.custom-dropdown {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+.custom-dropdown option {
+  background-color: #181c2f;
+  color: white;
+}
