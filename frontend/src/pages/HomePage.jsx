@@ -4,10 +4,13 @@ import { useState } from "react";
 import { IoMdHeartDislike } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
 import GameCard from "../components/GameCard";
+import { toast } from "sonner";
+import Loading from "../components/Loading";
 
 const HomePage = () => {
   const [games, setGames] = useState([]);
   const [filterByYear, setFilterByYear] = useState("asc");
+  const [initialLoading, setInitialLoading] = useState(true);
 
   const handleDelete = async (id) => {
     try {
@@ -17,8 +20,8 @@ const HomePage = () => {
       if (!res.ok) {
         throw new Error("Failed to delete game");
       }
+      toast.success("Successfully deleted!");
       setGames(games.filter((game) => game._id !== id));
-      //setSucces(true);
     } catch (error) {
       alert("Error happened please check console");
       console.error("Failed to delete game", error);
@@ -36,15 +39,17 @@ const HomePage = () => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
+        setInitialLoading(true);
         const res = await fetch("http://localhost:3333/api/games");
         if (!res.ok) {
           throw new Error("Failed to fetch games");
         }
         const data = await res.json();
-
         setGames(data.games);
       } catch (error) {
         console.error(error);
+      } finally {
+        setInitialLoading(false);
       }
     };
     fetchGames();
@@ -56,6 +61,13 @@ const HomePage = () => {
     filterByYear === "asc"
       ? games.sort((a, b) => a.releaseYear - b.releaseYear)
       : games.sort((a, b) => b.releaseYear - a.releaseYear);
+
+  if (initialLoading)
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">

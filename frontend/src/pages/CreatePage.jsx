@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import Loading from "../components/Loading";
 
 const CreatePage = () => {
   const [name, setName] = useState("");
@@ -8,11 +10,16 @@ const CreatePage = () => {
   const [developer, setDeveloper] = useState("");
   const [isFavourite, setIsFavourite] = useState(false);
   const [platform, setPlatform] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleCreateGame = async (e) => {
     e.preventDefault();
+
+    if (!name || !developer || !platform || !releaseYear) {
+      toast.error("Please fill all required fields!");
+    }
     const data = {
       name,
       releaseYear: Number(releaseYear),
@@ -21,7 +28,9 @@ const CreatePage = () => {
       isFavourite,
       platform,
     };
+
     try {
+      setLoading(true);
       const res = await fetch("http://localhost:3333/api/games", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -30,13 +39,22 @@ const CreatePage = () => {
       if (!res.ok) {
         throw new Error("Failed to create new game");
       }
+      toast.success("Your new game successfully added!");
     } catch (error) {
       alert("Error happened please check console");
       console.error("Failed to create game", error);
     } finally {
+      setLoading(false);
       navigate("/");
     }
   };
+
+  if (loading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-12 px-4">
       <div className="max-w-lg mx-auto bg-black/20 backdrop-blur-sm rounded-2xl border border-purple-500/30 p-8 ">

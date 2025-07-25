@@ -6,9 +6,6 @@ const GameCard = ({ game, onDelete }) => {
     navigate(`/${id}`);
   };
 
-  const handleGoToDetailsPage = (id) => {
-    navigate(`/${id}`);
-  };
   return (
     <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:border-purple-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-1">
       <div className="mb-4">
@@ -53,19 +50,14 @@ const GameCard = ({ game, onDelete }) => {
 
       <div className="flex justify-between gap-2 pt-4 border-t border-white/10">
         <button
-          className="cursor-pointer text-gray-700 font-bold hover:text-orange-600"
+          className="cursor-pointer text-gray-700 font-bold hover:text-green-400"
           onClick={() => handleGoToEditPage(game._id)}
         >
           Edit
         </button>
+
         <button
-          className="cursor-pointer text-gray-700 font-bold hover:text-orange-600"
-          onClick={() => handleGoToDetailsPage(game._id)}
-        >
-          Details
-        </button>
-        <button
-          className="cursor-pointer text-gray-700 font-bold hover:text-orange-600"
+          className="cursor-pointer text-gray-700 font-bold hover:text-orange-400"
           onClick={() => onDelete(game._id)}
         >
           Delete

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,6 @@ const UpdatePage = () => {
   const [isFavourite, setIsFavourite] = useState(false);
   const [platform, setPlatform] = useState([""]);
   const [game, setGame] = useState({});
-  //const [succes, setSucces] = useState(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -78,7 +77,7 @@ const UpdatePage = () => {
   } */
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0f2027] via-[#2c5364] to-[#1a2980] px-4 py-8">
       UpdatePage
       <div className="flex flex-col p-2">
         <p>{game.name}</p>
