@@ -1,8 +1,5 @@
 import { useEffect } from "react";
 import { useState } from "react";
-
-import { IoMdHeartDislike } from "react-icons/io";
-import { IoMdHeart } from "react-icons/io";
 import GameCard from "../components/GameCard";
 import { toast } from "sonner";
 import Loading from "../components/Loading";

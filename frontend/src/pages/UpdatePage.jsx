@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import Loading from "../components/Loading";
 
 const UpdatePage = () => {
   const [name, setName] = useState("");
@@ -10,6 +12,7 @@ const UpdatePage = () => {
   const [isFavourite, setIsFavourite] = useState(false);
   const [platform, setPlatform] = useState([""]);
   const [game, setGame] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -37,8 +40,6 @@ const UpdatePage = () => {
   }, [id]);
 
   const handleUpdateGame = async (e) => {
-    //console.log("updatebuttonclicked");
-
     e.preventDefault();
     const data = {
       name,
@@ -48,7 +49,12 @@ const UpdatePage = () => {
       isFavourite,
       platform,
     };
+    if (!name || !releaseYear || !developer || !platform) {
+      toast.error("Please fill all required fields!");
+      return;
+    }
     try {
+      setLoading(true);
       const res = await fetch(`http://localhost:3333/api/games/${id}`, {
         method: "PUT",
         headers: {
@@ -56,41 +62,56 @@ const UpdatePage = () => {
         },
         body: JSON.stringify(data),
       });
-      //setSucces(true);
       if (!res.ok) {
         throw new Error("Failed to update game");
       }
-
-      //console.log("updated");
+      toast.success("Updated successfully!");
     } catch (error) {
       alert("Error happened please check console");
       console.error("Failed to update", error);
     } finally {
-      //console.log("updated");
-      navigate("/all");
+      setLoading(false);
+      navigate("/");
     }
   };
 
-  //console.log(succes);
-  /*   if (succes) {
-    navigate("/all");
-  } */
+  if (loading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0f2027] via-[#2c5364] to-[#1a2980] px-4 py-8">
-      UpdatePage
-      <div className="flex flex-col p-2">
-        <p>{game.name}</p>
-        <form className="border-2 p-5" onSubmit={handleUpdateGame}>
+      <h1 className="text-5xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 drop-shadow-[0_0_10px_#00ffea] tracking-wide animate-pulse">
+        Update Game
+      </h1>
+      <div className="flex flex-col p-6 rounded-2xl bg-white/10 backdrop-blur-lg shadow-2xl boder-4 border-[#00ffea] max-w-lg w-full">
+        <p className="text-2xl font-bold text-green-400 mb-4 text-center drop-shadow-[0_0_6px_#00ffea]">
+          {game.name}
+        </p>
+        <form className="space-y-6" onSubmit={handleUpdateGame}>
           {/**NAME */}
-          <div className="border-2 m-2">
-            <label htmlFor="name">Name</label>
-            <input value={name} type="text" id="name" onChange={(e) => setName(e.target.value)} />
+          <div className="flex flex-col mb-2">
+            <label className="text-lg font-semibold text-purple-300 mb-1" htmlFor="name">
+              Name
+            </label>
+            <input
+              className="px-3 py-2 rounded-lg bg-[#181c2f] text-green-300 border-2 border-purple-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200"
+              value={name}
+              type="text"
+              id="name"
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
           {/**Release Year */}
-          <div className="border-2 m-2">
-            <label htmlFor="releaseYear">Release Year: </label>
+          <div className="flex flex-col mb-2">
+            <label className="text-lg font-semibold text-purple-300 mb-1" htmlFor="releaseYear">
+              Release Year:{" "}
+            </label>
             <input
+              className="px-3 py-2 rounded-lg bg-[#181c2f] text-green-300 border-2 border-purple-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200"
               value={releaseYear}
               type="text"
               id="releaseYear"
@@ -98,14 +119,25 @@ const UpdatePage = () => {
             />
           </div>
           {/**tags */}
-          <div className="border-2 m-2">
-            <label htmlFor="tags">Tags</label>
-            <input value={tags} type="text" id="tags" onChange={(e) => setTags(e.target.value)} />
+          <div className="flex flex-col mb-2">
+            <label className="text-lg font-semibold text-purple-300 mb-1" htmlFor="tags">
+              Tags
+            </label>
+            <input
+              className="px-3 py-2 rounded-lg bg-[#181c2f] text-green-300 border-2 border-purple-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200"
+              value={tags}
+              type="text"
+              id="tags"
+              onChange={(e) => setTags(e.target.value)}
+            />
           </div>
           {/**developer */}
-          <div className="border-2 m-2">
-            <label htmlFor="developer">Developer</label>
+          <div className="flex flex-col mb-2">
+            <label className="text-lg font-semibold text-purple-300 mb-1" htmlFor="developer">
+              Developer
+            </label>
             <input
+              className="px-3 py-2 rounded-lg bg-[#181c2f] text-green-300 border-2 border-purple-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200"
               value={developer}
               type="text"
               id="developer"
@@ -113,9 +145,12 @@ const UpdatePage = () => {
             />
           </div>
           {/**isFavourite */}
-          <div className="border-2 m-2">
-            <label htmlFor="isFavourite">Favourite</label>
+          <div className="flex items-center mb-2">
+            <label className="text-lg font-semibold text-purple-300 mb-1" htmlFor="isFavourite">
+              Favourite
+            </label>
             <input
+              className="accent-green-400 w-5 h-5"
               checked={isFavourite}
               type="checkbox"
               id="isFavourite"
@@ -124,9 +159,12 @@ const UpdatePage = () => {
           </div>
 
           {/**Platform */}
-          <div className="border-2 m-2">
-            <label htmlFor="platform">Platform</label>
+          <div className="flex flex-col mb-2">
+            <label className="text-lg font-semibold text-purple-300 mb-1" htmlFor="platform">
+              Platform
+            </label>
             <input
+              className="px-3 py-2 rounded-lg bg-[#181c2f] text-green-300 border-2 border-purple-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200"
               value={platform}
               type="text"
               id="platform"
@@ -134,9 +172,9 @@ const UpdatePage = () => {
             />
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center mt-6">
             <button
-              className="border-2 border-green-300 w-fit justify-self-center cursor-pointer hover:bg-green-900"
+              className="px-8 py-3 rounded-xl bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 text-black font-bold text-xl border-2 border-[#00ffea] shadow-lg hover:shadow-[0_0_20px_#00ffea] transition-all duration-200 cursor-pointer tracking-wider"
               type="submit"
             >
               Update game
