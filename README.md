@@ -73,4 +73,4 @@ export const createNewGame = async (req, res) => {
 };
 ```
 
-![Create](./assets/images/post.png)
+![Create](./public/post.png)
