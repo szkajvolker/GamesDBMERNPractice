@@ -53,3 +53,24 @@ A modern, full-stack MERN (MongoDB, Express, React, Node.js) application for man
 - **Add new game:** Fill out the form to add a new game
 - **Edit game:** Click a game card to update its details
 - **Delete game:** Remove a game from your collection
+
+## 📱 Screenshoots and code parts
+
+```js
+export const createNewGame = async (req, res) => {
+  try {
+    if (!req.body.name || !req.body.developer || !req.body.platform || !req.body.releaseYear) {
+      return res.status(400).json({ message: "Please fill all required fields" });
+    }
+    const newGame = req.body;
+    console.log(newGame);
+    const game = await Game.create(newGame);
+    res.status(201).json({ message: "Successfully created game", game });
+  } catch (error) {
+    console.error("Error creating game:", error);
+    res.status(500).json({ message: error.message || "Internal server error" });
+  }
+};
+```
+
+![Create](./assets/images/post.png)
