@@ -116,19 +116,22 @@ const HomePage = () => {
             </div>
           </section>
         </div>
-        <div className="">
-          <button className="cursor-pointer" onClick={handleSort}>
+        <div className="flex w-full items-center justify-center">
+          <button
+            className="cursor-pointer bg-gray-700 p-2 m-2 rounded-lg hover:bg-gray-500"
+            onClick={handleSort}
+          >
             <h2 className="text-purple-300">
               {filterByYear === "asc" ? "Sort by ascending year" : "Sort by descending year"}
             </h2>
           </button>
-
-          <section className="grid grid-cols-6 gap-2">
-            {filteredByReleaseYear.map((game) => (
-              <GameCard key={game._id} game={game} onDelete={handleDelete} />
-            ))}
-          </section>
         </div>
+
+        <section className="grid grid-cols-6 gap-2">
+          {filteredByReleaseYear.map((game) => (
+            <GameCard key={game._id} game={game} onDelete={handleDelete} />
+          ))}
+        </section>
       </div>
     </div>
   );
